@@ -19,7 +19,7 @@ gem 'haml', '~> 4.0.5'
 gem 'bootstrap-wysihtml5-rails'
 gem 'devise'
 # gem 'quiet_assets'
-gem "paperclip", "~> 4.3.6"
+gem "paperclip", "~> 5.2.0"
 gem 'kaminari'
 gem 'elevatezoom-rails'
 gem 'razorpay'

@@ -1,0 +1,38 @@
+/ FOOTER
+%footer.main-footer
+  .row
+    .col-lg-3
+      = image_tag("logo-retina.png")
+    .col-lg-3
+      %ul.foot-nav
+        %li= link_to "Collections", catelogs_path
+        %li= link_to "Stories & Tales", posts_path
+        %li= link_to "About us", get_page_url("About us")
+        %li= link_to "Contact us", get_page_url("Contact us")
+        %li= link_to "Terms & Conditions", get_page_url("Terms & Conditions")
+        %li= link_to "FAQs", get_page_url("FAQs")
+    .col-lg-3.address
+      %h4.foot-text Any queries?
+      %p
+        = image_tag("phone.png")
+        9999977777
+      %p
+        = image_tag("mail.png")
+        support@sautra.com
+      %p
+        = image_tag("location.png")
+        Koramangala 3rd Block,Bangalore
+    .col-lg-3
+      %h4 Get connected with us
+      %ul.list-inline.social
+        %li
+          %a{:href => "https://www.facebook.com/sautras"}
+            = image_tag("facebook.png")
+        %li
+          %a{:href => "aboutus.html"}
+            = image_tag("twitter.png")
+        %li
+          %a{:href => "aboutus.html"}
+            = image_tag("instagram.png")
+.row.sub
+  %p Copyright &copy; Sautra 2016

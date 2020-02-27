@@ -1,0 +1,10 @@
+%tr.pointer
+  %td.a-center
+    %input.flat{type: "checkbox", id: dom_id(page)}
+  %td= page.title
+  %td= admin_page_path(page)
+  %td.last
+    = link_to edit_admin_page_path(page) do
+      .fa.fa-edit.fa-lg
+    = link_to [:admin, page], data: {confirm: 'Are you sure?'}, method: :delete do
+      .fa.fa-trash.fa-lg

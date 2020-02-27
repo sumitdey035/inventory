@@ -1,0 +1,19 @@
+%section#product-info
+  .row
+    .container
+      = form_for Order.new, html: { class: 'modal-content' } do |f|
+        .container
+          .order_address= render @addresses, { f: f }
+        .list-group
+          %li.list-group-item
+            .row
+              .col-sm-1
+              .col-sm-3 ITEM
+              .col-sm-1 QTY
+              .col-sm-2 PRICE
+              .col-sm-3 DELIVERY DETAILS
+              .col-sm-1 SUBTOTAL
+              .col-sm-1
+          = render @cart_items
+        .text-right= f.submit "Order", class: "btn btn-sautra"    
+

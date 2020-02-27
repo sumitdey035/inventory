@@ -1,0 +1,9 @@
+%li.list-group-item
+  .row
+    .col-sm-2= "# #{order.serial}"
+    .col-sm-2
+      .fa.fa-inr= order.final_price
+    .col-sm-1= order.order_items.count
+    .col-sm-1= CONFIG["order_statuses"].key(order.status).capitalize
+    .col-sm-5= order.created_at.strftime("%d %b, %Y at %I:%M%p")
+    .col-sm-1= link_to "Deatils", order, class: "btn btn-primary"

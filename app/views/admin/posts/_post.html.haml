@@ -1,0 +1,13 @@
+%tr.pointer
+  %td.a-center
+    %input.flat{type: "checkbox", id: dom_id(post)}
+  %td
+    .fa-star.fa{ class: ( post.featured ? 'text-danger' : 'text-default' )}
+    = post.title
+  %td= post.category.name
+  %td= post.status == 1 ? 'Published' : 'Draft'
+  %td.last
+    = link_to edit_admin_post_path(post) do
+      .fa.fa-edit.fa-lg
+    = link_to [:admin, post], data: {confirm: 'Are you sure?'}, method: :delete do
+      .fa.fa-trash.fa-lg

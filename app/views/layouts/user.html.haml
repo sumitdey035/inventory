@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %title= t 'site.title'
+    = stylesheet_link_tag 'application_user', media: 'all'
+    = favicon_link_tag 'favicon.png'
+    = csrf_meta_tags
+  %body.user_layout
+    .container.body
+      .main_container
+        = yield

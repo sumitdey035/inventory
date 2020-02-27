@@ -1,0 +1,26 @@
+%div
+  .page-title
+    .title_left
+      %h3
+        %i.fa.fa-sticky-note
+        = "Posts"
+        %a.btn.btn-info.btn-sm{:href => new_admin_post_path} New
+  .clearfix
+  .row
+    .col-md-12.col-sm-12.col-xs-12
+      =# render "post_filter"
+      = paginate @posts
+      .x_content    
+        .table-responsive
+          %table.table.table-striped.jambo_table.bulk_action
+            %thead
+              %tr.headings
+                %th
+                  %input#check-all.flat{:type => "checkbox"}
+                %th.col-sm-4.column-title title
+                %th.column-title Category
+                %th.column-title status
+                %th.column-title.no-link.last
+                  %span.nobr Action
+            %tbody
+              = render @posts

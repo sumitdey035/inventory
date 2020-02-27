@@ -1,0 +1,217 @@
+$grey           : rgba(158, 158, 158, 1);
+$grey-lighten   : rgba(224, 224, 224, 1);
+$grey-tint           : rgba(158, 158, 158, 0.8);
+$grey-lighten-tint   : rgba(224, 224, 224, 0.8);
+
+$red            : rgba(229, 115, 115, 1);
+$red-tint       : rgba(229, 115, 115, 0.8);
+$red-dark       : rgba(244, 67, 54, 1);
+
+$green          : rgba(38, 166, 154, 1);
+$green-tint     : rgba(38, 166, 154, 0.8);
+$green-dark     : rgba(76, 175, 80, 1);
+
+
+$blue           : rgba(33,  150, 243, 1);
+$yellow         : rgba(255, 235, 59,  1);
+$yellow-dark    : rgba(255, 235, 59, 1);
+$yellow-tint    : rgba(255, 235, 59,  0.8);
+
+$blue-tint      : rgba(33,  150, 243, 0.8);
+
+.bg-red {
+  background-color: $red-dark;
+}
+
+.bg-yellow {
+  background-color: $yellow-dark;
+}
+
+.bg-green {
+  background-color: $green-dark;
+}
+
+.bg-grey {
+  background-color: $grey;
+}
+
+.text-grey {
+  color: $grey;
+}
+
+.label-lg {
+  font-size: 11px;
+}
+/***Extendable***/
+.disappear {
+  display: inline-block;
+  margin-right: -16px;
+  opacity: 0;
+  position: relative;
+  height:16px;
+  z-index: 1;
+  min-height: auto;
+  width: 16px;
+}
+
+.input-custome-shape {
+  content: " ";
+  display: inline-block;
+  transition: all 0.2s ease 0s;
+}
+/***End Extendable***/
+
+/***Checkbox***/
+.check-box {
+  input[type="checkbox"] {
+    @extend .disappear;
+
+    & + span {
+      position: relative;
+
+      &::before {
+        border: 1px solid $grey;
+        height: 18px;
+        margin: 0 5px -4px 0;
+        width: 18px;
+        @extend .input-custome-shape;
+      }
+
+      &::after {
+        border-width: 0 0 3px 3px;
+        border-color: transparent;
+        border-style: solid;
+        height: 7px;
+        width: 11px;
+        transform: rotate(-45deg);
+        position: absolute;
+        left: 4px;
+        top: 2px;
+        @extend .input-custome-shape;
+      }
+    }
+
+    &:checked + span {
+      &::before {
+        background-color: $green;
+      }
+
+      &::after {
+        border-color: #fff;
+      }
+    }
+  }
+
+  &-sm input[type="checkbox"] + span {
+    font-size: 12px;
+
+    &::before {
+      width: 14px;
+      height: 14px;
+      margin-bottom: -2px;
+    }
+
+    &::after {
+      border-width: 0 0 2px 2px;
+      left:3px;
+      height:5px;
+      width: 8px;
+      top: 2px;
+    }
+  }
+}
+/***End Checkbox***/
+
+/***Switch***/
+.switch input[type="checkbox"] {
+  @extend .disappear;
+
+  & + span {
+    position: relative;
+
+    &::before {
+      height: 20px;
+      width: 44px;
+      border: 1px solid $grey;
+      margin: 0 5px -4px 0;
+      @extend .input-custome-shape;
+    }
+
+    &::after {
+      background-color: $grey;
+      height: 16px;
+      left: 2px;
+      position: absolute;
+      top: -2px;
+      width: 18px;
+      @extend .input-custome-shape;
+    }
+  }
+
+  &:checked + span {
+    &::before {
+      border: 1px solid $green;
+    }
+
+    &::after {
+      left: 24px;
+      background-color: $green;
+    }
+  }
+}
+/***End Switch***/
+
+
+/***Radio***/
+input[type="radio"].radio {
+  @extend .disappear;
+
+  & + span {
+    position: relative;
+
+    &::before {
+      border: 1px solid $grey;
+      border-radius: 50%;
+      height: 18px;
+      margin: 0 5px -4px 0;
+      width: 18px;
+      @extend .input-custome-shape;
+    }
+
+    &::after {
+      background-color: transparent;
+      border-radius: 50%;
+      height: 12px;
+      left: 3px;
+      position: absolute;
+      top: 1px;
+      width: 12px;
+      @extend .input-custome-shape;
+    }
+  }
+
+  &:checked + span::before {
+    border-color: $green;
+  }
+
+  &:checked + span::after {
+    background-color: $green;
+  }
+}
+/***End Radio***/
+
+/***Line field***/
+.line-field {
+  input, .form-control {
+    border-width: 0 0 1px;
+    border-color: #ccc;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 6px 5px;
+  }
+}
+/***End Line field***/
+
+/******** General button styles*********/
+
+/******** End General button styles*********/

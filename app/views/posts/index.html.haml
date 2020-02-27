@@ -1,0 +1,29 @@
+%section#collections
+  .row
+    .header-text
+      %h2 Stories & Tales
+/ the grid
+.jquery-script-clear
+.container.marketing
+  %section#blog-landing
+    - @posts.each do |post|
+      %article.white-panel
+              
+        = image_tag(post.pictures.first.avatar) if post.pictures.first
+        %h1
+          = link_to post.title, post
+        .like-collection
+          %p
+            = image_tag("like.png")
+            = "48"
+
+:javascript
+  $(document).ready(function() {     
+    $('#blog-landing').pinterest_grid({
+      no_columns: 3,
+      padding_x: 1,
+      padding_y: 1,
+      margin_bottom: 50,
+      single_column_breakpoint: 700
+    });
+  });

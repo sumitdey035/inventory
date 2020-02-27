@@ -1,0 +1,24 @@
+= form_for [:admin, @image_slider], html: { class:"form-horizontal", multipart: true } do |f|
+  - if @image_slider.errors.any?
+    .alert.alert-danger
+      %p= "#{pluralize(@image_slider.errors.count, "error")} prevented the form from being saved:"
+      %ul
+        - @image_slider.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.text_field :name, class: "form-control", placeholder: "Enter name", required: true
+  
+  - if @image_slider.new_record?
+    .form-group
+      = f.fields_for :pictures do |h|
+        = h.file_field :avatar, multiple: true, class: "form-control", required: true
+
+  .form-group
+    %label.switch
+      Draft
+      = f.check_box :status, type: "checkbox"
+      %span Publish
+  .form-group
+    = f.submit :save, class: "btn btn-success"
+  

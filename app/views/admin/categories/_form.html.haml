@@ -1,0 +1,17 @@
+= form_for [:admin, @category], html: { class:"form-horizontal category_form" } do |f|
+  - if @category.errors.any?
+    .alert.alert-danger
+      %p= "#{pluralize(@category.errors.count, "error")} prevented the form from being saved:"
+      %ul
+        - @category.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.select :categorized_object, category_objects.map {|object| [ object.capitalize, object ] }, {include_blank: false}, {class: "form-control"}
+  .form-group
+    = f.text_field :name, class: "form-control", placeholder: "Enter name", required: true
+  .form-group
+    = f.text_area :description, class: "form-control", placeholder: "Enter description"
+  .form-group
+    = f.submit :save, class: "btn btn-success"
+  

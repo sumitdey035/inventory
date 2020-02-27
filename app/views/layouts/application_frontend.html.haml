@@ -1,0 +1,50 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %meta{:content => "", :name => "description"}
+    %meta{:content => "", :name => "author"}
+    %title Sautra | Making Heritage your Ensemble
+    = stylesheet_link_tag    'application_frontend', media: 'all'
+    = javascript_include_tag 'application_frontend'
+    = favicon_link_tag 'favicon.png'
+    = csrf_meta_tags
+
+    %link{:crossorigin => "anonymous", :href => "//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", :integrity => "sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1", :rel => "stylesheet"}/
+
+  %body#page-top.scrollbar{"data-spy" => "scroll", "data-target" => ".navbar-fixed-top"}
+    = render 'shared/top_nav'
+    = yield
+    = render 'shared/footer'
+
+    #cartModal.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog.modal-lg{:role => "document"}
+        = form_for Order.new, html: { class: 'modal-content' } do |f|
+          .modal-header
+            %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+              %span{"aria-hidden" => "true"} &times;
+            %h4#myModalLabel.modal-title Cart
+          .modal-body.list-group
+            %li.list-group-item
+              .row
+                .col-sm-1
+                .col-sm-3 ITEM
+                .col-sm-1 QTY
+                .col-sm-2 PRICE
+                .col-sm-3 DELIVERY DETAILS
+                .col-sm-1 SUBTOTAL
+                .col-sm-1
+            .cart_content
+
+            %li.list-group-item
+              .row
+                %h4.col-sm-2= "Total"
+                %h4.pull-right.col-sm-2
+                  .total_price
+
+          .modal-footer
+            %button.btn-sautra{"data-dismiss" => "modal", :type => "button"} Close
+            =# f.submit "Order", class: "btn-sautra"
+            = link_to "Place Order", checkout_orders_path, class: "btn btn-sautra"

@@ -1,0 +1,12 @@
+%tr.pointer
+  %td.a-center
+    %input.flat{:name => "table_records", :type => "checkbox"}
+  %td= catelog.name
+  %td= catelog.status
+  %td.last
+    = link_to edit_admin_catelog_path(catelog), remote: true do
+      .fa.fa-edit.fa-lg
+    = link_to [:admin, catelog], data: {confirm: 'Are you sure?'}, method: :delete do
+      .fa.fa-trash.fa-lg
+    = link_to catelog_items_admin_catelog_path(catelog) do
+      .fa.fa-gears.fa-lg

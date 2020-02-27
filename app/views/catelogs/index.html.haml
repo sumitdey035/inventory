@@ -1,0 +1,49 @@
+.collection-header
+  - unless @catelogs.blank?
+    %img.cover{:src => "#{@catelogs.first.pictures.first.avatar}"}
+/ Page Content
+%section#new
+  .row
+    .container
+      .col-lg-12
+        .header-text
+          %h2 NEWLY ARRiVED
+  .container
+    .row
+      .col-md-12
+        .content
+          .grid
+            - @catelogs.first(4).each do |catelog|
+              %figure.effect-sadie
+                = link_to catelog do
+                  = image_tag(catelog.pictures.first.avatar.url(:large))
+                  %figcaption
+                    %h2= catelog.name
+                    %p= catelog.description
+            
+%section#old
+  .row
+    .container
+      .col-lg-12
+        .header-text
+          %h2 OLDER COLLECTIONS
+  .container
+    .row
+      #old-collection.owl-carousel.owl-theme.center
+        - @catelogs.first(4).each do |catelog|
+          .item
+            = link_to catelog do
+              = image_tag(catelog.pictures.first.avatar.url(:medium))
+              %p= catelog.name
+             
+:javascript
+  $(document).ready(function() {
+    $("#old-collection").owlCarousel({
+      slideSpeed : 600,
+      paginationSpeed : 400,
+      navigation: true,
+      items : 7,
+      itemsDesktop : [1199,3],
+      itemsDesktopSmall : [979,3]
+    });
+  });

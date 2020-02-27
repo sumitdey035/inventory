@@ -1,0 +1,10 @@
+//= require js/jquery.min
+//= require jquery_ujs
+//= require js/bootstrap.min
+//= require js/jquery.easing.min
+//= require js/scrolling-nav
+//= require js/owl.carousel.min
+//= require js/modernizr
+//= require js/pinterest_grid
+//= require javascript
+//= require jquery.elevateZoom-3.0.8.min

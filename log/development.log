@@ -1,0 +1,739 @@
+  [1m[35m (3.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5665627332654247770);[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreatePosts (20160523165658)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(5665627332654247770)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5665627332654247770);[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreatePosts (20160523165658)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE TABLE "posts" ("id" bigserial primary key, "title" character varying NOT NULL, "description" text NOT NULL, "status" integer NOT NULL, "category_id" integer NOT NULL, "user_id" integer NOT NULL, "featured" boolean NOT NULL, "likes" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160523165658"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCategories (20160525171727)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "categories" ("id" bigserial primary key, "name" character varying, "description" text, "parent" integer, "categorized_object" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "categories" ("name", "description", "categorized_object", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Uncategorized"], ["description", "Default category"], ["categorized_object", "posts"], ["created_at", "2020-02-27 15:04:12.743762"], ["updated_at", "2020-02-27 15:04:12.743762"]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "categories" ("name", "description", "categorized_object", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Uncategorized"], ["description", "Default category"], ["categorized_object", "products"], ["created_at", "2020-02-27 15:04:12.744997"], ["updated_at", "2020-02-27 15:04:12.744997"]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160525171727"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DeviseCreateUsers (20160528164304)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" inet, "last_sign_in_ip" inet, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "admin@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "admin@email.com"], ["encrypted_password", "$2a$11$yQEYxJuc8g0s4oftLvMW8u0yYP82hLQfYuhjH3mB9AjgF9E27X1SG"], ["created_at", "2020-02-27 15:04:12.874009"], ["updated_at", "2020-02-27 15:04:12.874009"]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160528164304"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateProducts (20160531145230)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "products" ("id" bigserial primary key, "name" character varying NOT NULL, "description" text, "status" integer NOT NULL, "category_id" integer NOT NULL, "product_price" decimal DEFAULT 0 NOT NULL, "sell_price" decimal DEFAULT 0 NOT NULL, "product_type" integer NOT NULL, "featured" integer DEFAULT 0 NOT NULL, "sku" integer NOT NULL, "brand_id" integer NOT NULL, "place_of_origin" character varying, "design" character varying, "has_blouse_piece" boolean DEFAULT 'f' NOT NULL, "likes" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160531145230"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCatelogs (20160601144717)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "catelogs" ("id" bigserial primary key, "name" character varying NOT NULL, "status" integer DEFAULT 0 NOT NULL, "description" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160601144717"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCatelogItems (20160601150602)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "catelog_items" ("id" bigserial primary key, "name" character varying NOT NULL, "status" integer DEFAULT 0 NOT NULL, "description" text, "collection_id" integer, "collection_type" character varying, "collection_url" text NOT NULL, "catelog_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_catelog_items_on_collection_id" ON "catelog_items"  ("collection_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160601150602"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePictures (20160607014216)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "pictures" ("id" bigserial primary key, "imageable_id" integer, "imageable_type" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_pictures_on_imageable_id" ON "pictures"  ("imageable_id")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160607014216"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAvatarToPictures (20160607014609)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "pictures" ADD "avatar_file_name" character varying[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "pictures" ADD "avatar_content_type" character varying[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "pictures" ADD "avatar_file_size" integer[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "pictures" ADD "avatar_updated_at" timestamp[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160607014609"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateBrands (20160607164910)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.5ms)[0m  [1m[35mCREATE TABLE "brands" ("id" bigserial primary key, "name" character varying NOT NULL, "description" text, "owner_name" character varying NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160607164910"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePriceRequests (20160618041551)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "price_requests" ("id" bigserial primary key, "name" character varying, "email_id" character varying, "mobile_no" character varying, "query" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160618041551"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateImageSlider (20160626142748)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "image_sliders" ("id" bigserial primary key, "name" character varying, "status" boolean, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160626142748"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCartItems (20160714164856)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "cart_items" ("id" bigserial primary key, "user_id" integer NOT NULL, "product_id" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160714164856"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateOrders (20160714167828)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "orders" ("id" bigserial primary key, "serial" integer NOT NULL, "status" integer NOT NULL, "total_price" decimal DEFAULT 0, "shipping" decimal DEFAULT 0, "tax" decimal DEFAULT 0, "adjustment" decimal DEFAULT 0, "final_price" decimal DEFAULT 0, "address_id" bigint, "user_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_orders_on_address_id" ON "orders"  ("address_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_orders_on_user_id" ON "orders"  ("user_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160714167828"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateOrderItems (20160715154119)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" bigserial primary key, "order_id" bigint, "product_id" bigint, "qty" integer NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_order_items_on_order_id" ON "order_items"  ("order_id")[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE  INDEX  "index_order_items_on_product_id" ON "order_items"  ("product_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160715154119"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAddresses (20160715175215)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "addresses" ("id" bigserial primary key, "user_id" bigint, "name" character varying NOT NULL, "street_address" text NOT NULL, "landmark" character varying, "city" character varying NOT NULL, "state" character varying NOT NULL, "country" character varying NOT NULL, "pincode" integer NOT NULL, "phone_number" character varying NOT NULL, "default" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_addresses_on_user_id" ON "addresses"  ("user_id")[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160715175215"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddCurrentStockToProducts (20160717101027)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "products" ADD "current_stock" integer DEFAULT 0[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160717101027"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddProductIdToPriceRequests (20160722042430)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "price_requests" ADD "product_id" integer[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722042430"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePages (20160725150815)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "pages" ("id" bigserial primary key, "user_id" bigint, "title" character varying, "description" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE  INDEX  "index_pages_on_user_id" ON "pages"  ("user_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160725150815"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-02-27 15:04:12.975147"], ["updated_at", "2020-02-27 15:04:12.975147"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(5665627332654247770)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2020-02-27 20:34:26 +0530
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by WelcomeController#index as HTML
+  [1m[36mPost Load (0.6ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."featured" = $2 ORDER BY "posts"."created_at" DESC LIMIT $3[0m  [["status", 1], ["featured", "t"], ["LIMIT", 1]]
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."status" = $2 ORDER BY "posts"."created_at" ASC LIMIT $3[0m  [["status", 1], ["status", 1], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.4ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" WHERE "image_sliders"."status" = $1 ORDER BY "image_sliders"."id" ASC LIMIT $2[0m  [["status", "t"], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.2ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" ORDER BY "image_sliders"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering welcome/index.html.haml within layouts/application_frontend
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT "image_sliders".* FROM "image_sliders"[0m
+  Rendered welcome/_primary_slider.html.haml (479.9ms)
+  [1m[36mCatelog Load (0.7ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs" ORDER BY "catelogs"."created_at" DESC[0m
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."status" = $1 ORDER BY "posts"."created_at" DESC[0m  [["status", 1]]
+  Rendered welcome/index.html.haml within layouts/application_frontend (487.4ms)
+  Rendered shared/_top_nav.html.haml (9.7ms)
+  [1m[36mPage Load (0.7ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "About us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.4ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Contact us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.4ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Terms & Conditions"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "FAQs"], ["LIMIT", 1]]
+  Rendered shared/_footer.html.haml (20.4ms)
+Completed 200 OK in 736ms (Views: 700.1ms | ActiveRecord: 14.0ms)
+
+
+Started GET "/assets/application_frontend.debug-f034e4bc74493fc075287a8c6d52aecdf622edf667c00e08edfcc4f5bdfaa9b2.js" for ::1 at 2020-02-27 20:34:27 +0530
+Started GET "/assets/logo-retina-c4323a6ff04ea0171a8a6c634f05a3e09571bf256914f68e0eeeb4cbe6a4df88.png" for ::1 at 2020-02-27 20:34:27 +0530
+Started GET "/assets/logo-sautra-d60c30945b743258ba68f9b883a62764baacda5feafd39aadcd73c9132325515.png" for ::1 at 2020-02-27 20:34:27 +0530
+Started GET "/assets/application_frontend.debug-112cab0134950608f2c40b53c1e0077dd6b283f6c6f578acc572552ab8c95f5f.css" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/usp2-06c54c236b7b0f593cff1319c6ca9e8dd1512a18ea72e9333c393140dd8e80d7.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/usp3-527a1fee42805ed578f9e448a9014ff6b266001c7f0e8ac7a95d5c62b10b59b3.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/mail-d54ee82d78b9a6d1d3d04d39be92b55548a2652295f0e4fdbc2be5a481fa87f9.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/usp4-b11c1b5e131f943cf817929932b6a857dc4e9b9aaa64a12a617200cd764a5923.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/phone-6c4660dd02747e9c6b25c4724fd58a1b7b79f1e610a34846ef52a99225c5f5e3.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/location-b888517bbd08feca6c9c25495bfb563f3d30e478c017a5a4673ff56ec3b77ba9.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/usp1-4e6992564b0e3c414926a72a78c0df677e22d92db942b127bed4c2842bc4e904.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/well.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/facebook-f41716c09972fa8c6d977f09a1fab1e53d33bd824f8ac51633c237c41b1d5b7c.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/well_white.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/twitter-93d30a2788e05b7b9c881e2f2121922de14cdbd464577a9bdad4d701a6260c76.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/well_grey.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/instagram-e463576a376bd5113a83594b40464f7efa04c9f8cc85b86fc52273d01728ef94.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/assets/favicon-ee9fd454e1ed2a25640d26f57d1c7915ec2dbae97876a6591a61ffbc5490f5ad.png" for ::1 at 2020-02-27 20:34:32 +0530
+Started GET "/users/sign_in" for ::1 at 2020-02-27 20:34:46 +0530
+Processing by Users::SessionsController#new as HTML
+  Rendering users/sessions/new.html.haml within layouts/user
+  Rendered users/sessions/new.html.haml within layouts/user (26.3ms)
+Completed 200 OK in 78ms (Views: 62.8ms | ActiveRecord: 2.6ms)
+
+
+Started GET "/assets/application_user.debug-0c99468b764f82fa3cf7724bd169d322650d986a8bc9951c0a0323410e070711.css" for ::1 at 2020-02-27 20:34:46 +0530
+Started POST "/users/sign_in" for ::1 at 2020-02-27 20:34:49 +0530
+Processing by Users::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"id9ZLOAFyw42Mhi34K+Zstq3exyyYU0s9gpjjmVMA3tBPlSNtGiGZA47rOG0CUTcKD8YTu+aEWe3o6WOWlputQ==", "user"=>{"email"=>"admin@email.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "admin@email.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 110ms (ActiveRecord: 0.7ms)
+
+
+Processing by Users::SessionsController#new as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"id9ZLOAFyw42Mhi34K+Zstq3exyyYU0s9gpjjmVMA3tBPlSNtGiGZA47rOG0CUTcKD8YTu+aEWe3o6WOWlputQ==", "user"=>{"email"=>"admin@email.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  Rendering users/sessions/new.html.haml within layouts/user
+  Rendered users/sessions/new.html.haml within layouts/user (2.9ms)
+Completed 200 OK in 107ms (Views: 9.9ms | ActiveRecord: 0.0ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "admin@email.com"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Started POST "/users/sign_in" for ::1 at 2020-02-27 20:36:29 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"/R5qzooIoTb7PTn0HAPe7ZkmrP6MDfzZ+CMtLlf3gaU1/2dv3mXsXMM0jaJIpQODa67PrNH2oJK5iusuaOHsaw==", "user"=>{"email"=>"admin@email.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "admin@email.com"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "current_sign_in_at" = $1, "last_sign_in_at" = $2, "current_sign_in_ip" = $3, "last_sign_in_ip" = $4, "sign_in_count" = $5, "updated_at" = $6 WHERE "users"."id" = $7[0m  [["current_sign_in_at", "2020-02-27 15:06:29.669852"], ["last_sign_in_at", "2020-02-27 15:06:29.669852"], ["current_sign_in_ip", "::1/128"], ["last_sign_in_ip", "::1/128"], ["sign_in_count", 1], ["updated_at", "2020-02-27 15:06:29.670687"], ["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 160ms (ActiveRecord: 5.1ms)
+
+
+Started GET "/" for ::1 at 2020-02-27 20:36:34 +0530
+Processing by WelcomeController#index as HTML
+  [1m[36mPost Load (0.5ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."featured" = $2 ORDER BY "posts"."created_at" DESC LIMIT $3[0m  [["status", 1], ["featured", "t"], ["LIMIT", 1]]
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."status" = $2 ORDER BY "posts"."created_at" ASC LIMIT $3[0m  [["status", 1], ["status", 1], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" WHERE "image_sliders"."status" = $1 ORDER BY "image_sliders"."id" ASC LIMIT $2[0m  [["status", "t"], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.2ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" ORDER BY "image_sliders"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering welcome/index.html.haml within layouts/application_frontend
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT "image_sliders".* FROM "image_sliders"[0m
+  Rendered welcome/_primary_slider.html.haml (78.2ms)
+  [1m[36mCatelog Load (0.5ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs" ORDER BY "catelogs"."created_at" DESC[0m
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."status" = $1 ORDER BY "posts"."created_at" DESC[0m  [["status", 1]]
+  Rendered welcome/index.html.haml within layouts/application_frontend (84.5ms)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "cart_items" WHERE "cart_items"."user_id" = $1[0m  [["user_id", 1]]
+  Rendered shared/_top_nav.html.haml (21.3ms)
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "About us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Contact us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Terms & Conditions"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "FAQs"], ["LIMIT", 1]]
+  Rendered shared/_footer.html.haml (19.0ms)
+Completed 200 OK in 186ms (Views: 156.8ms | ActiveRecord: 12.8ms)
+
+
+Started GET "/assets/well_grey.png" for ::1 at 2020-02-27 20:36:35 +0530
+Started GET "/assets/well_white.png" for ::1 at 2020-02-27 20:36:35 +0530
+Started GET "/assets/well.png" for ::1 at 2020-02-27 20:36:35 +0530
+Started GET "/orders" for ::1 at 2020-02-27 20:36:39 +0530
+Processing by OrdersController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering orders/index.html.haml within layouts/application_frontend
+  [1m[36mOrder Load (0.7ms)[0m  [1m[34mSELECT "orders".* FROM "orders" WHERE "orders"."user_id" = $1 ORDER BY "orders"."created_at" DESC[0m  [["user_id", 1]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered orders/index.html.haml within layouts/application_frontend (2.9ms)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "cart_items" WHERE "cart_items"."user_id" = $1[0m  [["user_id", 1]]
+  Rendered shared/_top_nav.html.haml (6.0ms)
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "About us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Contact us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Terms & Conditions"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "FAQs"], ["LIMIT", 1]]
+  Rendered shared/_footer.html.haml (8.7ms)
+Completed 200 OK in 49ms (Views: 41.7ms | ActiveRecord: 2.3ms)
+
+
+Started GET "/assets/well_grey.png" for ::1 at 2020-02-27 20:36:40 +0530
+Started GET "/admin" for ::1 at 2020-02-27 20:36:48 +0530
+Processing by Admin::AdminController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/admin/index.html.haml within layouts/application
+  Rendered admin/admin/index.html.haml within layouts/application (0.6ms)
+  Rendered shared/admin/_notice.html.haml (2.2ms)
+  Rendered shared/admin/_sidebar.html.haml (5.5ms)
+  Rendered shared/admin/_top_nav.html.haml (2.1ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 235ms (Views: 229.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/application.debug-74d39141c34aee25a41f357e6ec6d435fe0794135e7036e2b70c11dccabd87b3.css" for ::1 at 2020-02-27 20:36:48 +0530
+Started GET "/assets/application.debug-e704676f02370da9b66238b918dc70fbeda452c2da502e2fe54034b5001a4c04.js" for ::1 at 2020-02-27 20:36:48 +0530
+Started GET "/assets/img-a91a7fec655b1989b407263a043a93b2925cd07b860e83076e5b847651d46aa1.jpg" for ::1 at 2020-02-27 20:36:48 +0530
+Started GET "/admin/admin" for ::1 at 2020-02-27 20:36:51 +0530
+Processing by Admin::AdminController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/admin/index.html.haml within layouts/application
+  Rendered admin/admin/index.html.haml within layouts/application (0.6ms)
+  Rendered shared/admin/_notice.html.haml (3.2ms)
+  Rendered shared/admin/_sidebar.html.haml (10.6ms)
+  Rendered shared/admin/_top_nav.html.haml (4.2ms)
+  Rendered shared/admin/_footer.html.haml (1.4ms)
+Completed 200 OK in 63ms (Views: 58.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/admin/categories" for ::1 at 2020-02-27 20:36:52 +0530
+Processing by Admin::CategoriesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/categories/index.html.haml within layouts/application
+  Rendered admin/categories/_form.html.haml (10.3ms)
+  [1m[36mCategory Load (0.5ms)[0m  [1m[34mSELECT  "categories".* FROM "categories" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of admin/categories/_category.html.haml [2 times] (3.3ms)
+  Rendered admin/categories/index.html.haml within layouts/application (31.5ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.6ms)
+  Rendered shared/admin/_top_nav.html.haml (2.1ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 113ms (Views: 94.8ms | ActiveRecord: 3.3ms)
+
+
+Started GET "/admin/brands" for ::1 at 2020-02-27 20:36:55 +0530
+Processing by Admin::BrandsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/brands/index.html.haml within layouts/application
+  Rendered admin/brands/_form.html.haml (4.4ms)
+  [1m[36mBrand Load (0.6ms)[0m  [1m[34mSELECT  "brands".* FROM "brands" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/brands/index.html.haml within layouts/application (15.4ms)
+  Rendered shared/admin/_notice.html.haml (2.3ms)
+  Rendered shared/admin/_sidebar.html.haml (6.6ms)
+  Rendered shared/admin/_top_nav.html.haml (2.2ms)
+  Rendered shared/admin/_footer.html.haml (0.7ms)
+Completed 200 OK in 74ms (Views: 59.9ms | ActiveRecord: 3.3ms)
+
+
+Started GET "/admin/pages" for ::1 at 2020-02-27 20:36:57 +0530
+Processing by Admin::PagesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/pages/index.html.haml within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "pages"[0m
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/pages/index.html.haml within layouts/application (9.7ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (5.7ms)
+  Rendered shared/admin/_top_nav.html.haml (2.1ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 63ms (Views: 57.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/posts" for ::1 at 2020-02-27 20:36:59 +0530
+Processing by Admin::PostsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/posts/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/posts/index.html.haml within layouts/application (8.8ms)
+  Rendered shared/admin/_notice.html.haml (2.2ms)
+  Rendered shared/admin/_sidebar.html.haml (5.9ms)
+  Rendered shared/admin/_top_nav.html.haml (2.2ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 57ms (Views: 51.5ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/admin/price_requests" for ::1 at 2020-02-27 20:37:01 +0530
+Processing by Admin::PriceRequestsController#index as HTML
+  Rendering admin/price_requests/index.html.haml within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "price_requests"[0m
+  [1m[36mPriceRequest Load (0.2ms)[0m  [1m[34mSELECT  "price_requests".* FROM "price_requests" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/price_requests/index.html.haml within layouts/application (10.3ms)
+  Rendered shared/admin/_notice.html.haml (2.1ms)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered shared/admin/_sidebar.html.haml (6.8ms)
+  Rendered shared/admin/_top_nav.html.haml (2.2ms)
+  Rendered shared/admin/_footer.html.haml (0.7ms)
+Completed 200 OK in 65ms (Views: 57.9ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/admin/catelogs" for ::1 at 2020-02-27 20:37:03 +0530
+Processing by Admin::CatelogsController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/catelogs/index.html.haml within layouts/application
+  Rendered admin/catelogs/_form.html.haml (4.6ms)
+  [1m[36mCatelog Load (0.3ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs"[0m
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/catelogs/index.html.haml within layouts/application (10.3ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (6.9ms)
+  Rendered shared/admin/_top_nav.html.haml (5.9ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 85ms (Views: 59.5ms | ActiveRecord: 4.7ms)
+
+
+Started GET "/admin/products" for ::1 at 2020-02-27 20:37:04 +0530
+Processing by Admin::ProductsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/products/index.html.haml within layouts/application
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "products"[0m
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/products/index.html.haml within layouts/application (13.2ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.5ms)
+  Rendered shared/admin/_top_nav.html.haml (2.2ms)
+  Rendered shared/admin/_footer.html.haml (0.7ms)
+Completed 200 OK in 68ms (Views: 56.4ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/admin/catelogs" for ::1 at 2020-02-27 20:37:06 +0530
+Processing by Admin::CatelogsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/catelogs/index.html.haml within layouts/application
+  Rendered admin/catelogs/_form.html.haml (3.1ms)
+  [1m[36mCatelog Load (0.3ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs"[0m
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/catelogs/index.html.haml within layouts/application (8.9ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.7ms)
+  Rendered shared/admin/_top_nav.html.haml (2.4ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 66ms (Views: 60.8ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/image_sliders" for ::1 at 2020-02-27 20:37:10 +0530
+Processing by Admin::ImageSlidersController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/image_sliders/index.html.haml within layouts/application
+  Rendered admin/image_sliders/_form.html.haml (4.2ms)
+  [1m[36mImageSlider Load (0.5ms)[0m  [1m[34mSELECT "image_sliders".* FROM "image_sliders"[0m
+  Rendered collection of admin/image_sliders/_image_slider.html.haml [0 times] (0.0ms)
+  Rendered admin/image_sliders/index.html.haml within layouts/application (12.9ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (6.1ms)
+  Rendered shared/admin/_top_nav.html.haml (2.4ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 67ms (Views: 57.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/price_requests" for ::1 at 2020-02-27 20:37:13 +0530
+Processing by Admin::PriceRequestsController#index as HTML
+  Rendering admin/price_requests/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "price_requests"[0m
+  [1m[36mPriceRequest Load (0.3ms)[0m  [1m[34mSELECT  "price_requests".* FROM "price_requests" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/price_requests/index.html.haml within layouts/application (12.9ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered shared/admin/_sidebar.html.haml (7.9ms)
+  Rendered shared/admin/_top_nav.html.haml (2.3ms)
+  Rendered shared/admin/_footer.html.haml (0.7ms)
+Completed 200 OK in 65ms (Views: 61.6ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/catelogs" for ::1 at 2020-02-27 20:37:14 +0530
+Processing by Admin::CatelogsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/catelogs/index.html.haml within layouts/application
+  Rendered admin/catelogs/_form.html.haml (3.4ms)
+  [1m[36mCatelog Load (0.3ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs"[0m
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/catelogs/index.html.haml within layouts/application (9.0ms)
+  Rendered shared/admin/_notice.html.haml (2.6ms)
+  Rendered shared/admin/_sidebar.html.haml (9.0ms)
+  Rendered shared/admin/_top_nav.html.haml (2.5ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 64ms (Views: 59.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/products" for ::1 at 2020-02-27 20:37:16 +0530
+Processing by Admin::ProductsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/products/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "products"[0m
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/products/index.html.haml within layouts/application (9.4ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.4ms)
+  Rendered shared/admin/_top_nav.html.haml (2.1ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 62ms (Views: 57.4ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/posts" for ::1 at 2020-02-27 20:37:17 +0530
+Processing by Admin::PostsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/posts/index.html.haml within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/posts/index.html.haml within layouts/application (10.0ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.7ms)
+  Rendered shared/admin/_top_nav.html.haml (2.5ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 67ms (Views: 62.3ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/pages" for ::1 at 2020-02-27 20:37:18 +0530
+Processing by Admin::PagesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/pages/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "pages"[0m
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/pages/index.html.haml within layouts/application (8.8ms)
+  Rendered shared/admin/_notice.html.haml (2.3ms)
+  Rendered shared/admin/_sidebar.html.haml (6.2ms)
+  Rendered shared/admin/_top_nav.html.haml (2.5ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 60ms (Views: 55.7ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/admin/brands" for ::1 at 2020-02-27 20:37:18 +0530
+Processing by Admin::BrandsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/brands/index.html.haml within layouts/application
+  Rendered admin/brands/_form.html.haml (2.4ms)
+  [1m[36mBrand Load (0.3ms)[0m  [1m[34mSELECT  "brands".* FROM "brands" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/brands/index.html.haml within layouts/application (12.8ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.3ms)
+  Rendered shared/admin/_top_nav.html.haml (2.4ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 66ms (Views: 61.2ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/categories" for ::1 at 2020-02-27 20:37:19 +0530
+Processing by Admin::CategoriesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/categories/index.html.haml within layouts/application
+  Rendered admin/categories/_form.html.haml (2.5ms)
+  [1m[36mCategory Load (0.4ms)[0m  [1m[34mSELECT  "categories".* FROM "categories" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of admin/categories/_category.html.haml [2 times] (2.1ms)
+  Rendered admin/categories/index.html.haml within layouts/application (19.5ms)
+  Rendered shared/admin/_notice.html.haml (2.8ms)
+  Rendered shared/admin/_sidebar.html.haml (7.7ms)
+  Rendered shared/admin/_top_nav.html.haml (2.8ms)
+  Rendered shared/admin/_footer.html.haml (1.0ms)
+Completed 200 OK in 79ms (Views: 74.0ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/admin/admin" for ::1 at 2020-02-27 20:37:20 +0530
+Processing by Admin::AdminController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/admin/index.html.haml within layouts/application
+  Rendered admin/admin/index.html.haml within layouts/application (0.7ms)
+  Rendered shared/admin/_notice.html.haml (5.4ms)
+  Rendered shared/admin/_sidebar.html.haml (15.2ms)
+  Rendered shared/admin/_top_nav.html.haml (4.3ms)
+  Rendered shared/admin/_footer.html.haml (1.8ms)
+Completed 200 OK in 82ms (Views: 77.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/" for ::1 at 2020-02-27 20:37:22 +0530
+Processing by WelcomeController#index as HTML
+  [1m[36mPost Load (0.4ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."featured" = $2 ORDER BY "posts"."created_at" DESC LIMIT $3[0m  [["status", 1], ["featured", "t"], ["LIMIT", 1]]
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."status" = $1 AND "posts"."status" = $2 ORDER BY "posts"."created_at" ASC LIMIT $3[0m  [["status", 1], ["status", 1], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" WHERE "image_sliders"."status" = $1 ORDER BY "image_sliders"."id" ASC LIMIT $2[0m  [["status", "t"], ["LIMIT", 1]]
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT  "image_sliders".* FROM "image_sliders" ORDER BY "image_sliders"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering welcome/index.html.haml within layouts/application_frontend
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT "image_sliders".* FROM "image_sliders"[0m
+  Rendered welcome/_primary_slider.html.haml (8.1ms)
+  [1m[36mCatelog Load (0.5ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs" ORDER BY "catelogs"."created_at" DESC[0m
+  [1m[36mPost Load (0.6ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."status" = $1 ORDER BY "posts"."created_at" DESC[0m  [["status", 1]]
+  Rendered welcome/index.html.haml within layouts/application_frontend (14.1ms)
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "cart_items" WHERE "cart_items"."user_id" = $1[0m  [["user_id", 1]]
+  Rendered shared/_top_nav.html.haml (9.0ms)
+  [1m[36mPage Load (0.4ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "About us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Contact us"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "Terms & Conditions"], ["LIMIT", 1]]
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."title" = $1 LIMIT $2[0m  [["title", "FAQs"], ["LIMIT", 1]]
+  Rendered shared/_footer.html.haml (10.0ms)
+Completed 200 OK in 70ms (Views: 59.9ms | ActiveRecord: 4.5ms)
+
+
+Started GET "/assets/well_white.png" for ::1 at 2020-02-27 20:37:22 +0530
+Started GET "/assets/well_grey.png" for ::1 at 2020-02-27 20:37:22 +0530
+Started GET "/assets/well.png" for ::1 at 2020-02-27 20:37:22 +0530
+Started GET "/collection-list.html" for ::1 at 2020-02-27 20:37:43 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/collection-list.html"):
+  
+actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.2.2) lib/rack/method_override.rb:24:in `call'
+rack (2.2.2) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.2.2) lib/rack/sendfile.rb:110:in `call'
+railties (5.1.2) lib/rails/engine.rb:522:in `call'
+rack (2.2.2) lib/rack/handler/webrick.rb:95:in `service'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/httpserver.rb:140:in `service'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/httpserver.rb:96:in `run'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/server.rb:307:in `block in start_thread'
+Started GET "/cart_items" for ::1 at 2020-02-27 20:38:07 +0530
+Processing by CartItemsController#index as JS
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering cart_items/index.js.erb
+  [1m[36mCartItem Load (0.3ms)[0m  [1m[34mSELECT "cart_items".* FROM "cart_items" WHERE "cart_items"."user_id" = $1[0m  [["user_id", 1]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered cart_items/index.js.erb (2.6ms)
+Completed 200 OK in 37ms (Views: 30.6ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/img/well_white.png" for ::1 at 2020-02-27 20:38:07 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/img/well_white.png"):
+  
+actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.2.2) lib/rack/method_override.rb:24:in `call'
+rack (2.2.2) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.2.2) lib/rack/sendfile.rb:110:in `call'
+railties (5.1.2) lib/rails/engine.rb:522:in `call'
+rack (2.2.2) lib/rack/handler/webrick.rb:95:in `service'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/httpserver.rb:140:in `service'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/httpserver.rb:96:in `run'
+/Users/sumitdey/.rbenv/versions/2.5.3/lib/ruby/2.5.0/webrick/server.rb:307:in `block in start_thread'
+Started GET "/admin/categories" for ::1 at 2020-02-27 20:38:15 +0530
+Processing by Admin::CategoriesController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/categories/index.html.haml within layouts/application
+  Rendered admin/categories/_form.html.haml (2.5ms)
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT  "categories".* FROM "categories" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of admin/categories/_category.html.haml [2 times] (2.1ms)
+  Rendered admin/categories/index.html.haml within layouts/application (16.7ms)
+  Rendered shared/admin/_notice.html.haml (3.2ms)
+  Rendered shared/admin/_sidebar.html.haml (9.2ms)
+  Rendered shared/admin/_top_nav.html.haml (2.3ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 71ms (Views: 66.8ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/admin/image_sliders" for ::1 at 2020-02-27 20:38:25 +0530
+Processing by Admin::ImageSlidersController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/image_sliders/index.html.haml within layouts/application
+  Rendered admin/image_sliders/_form.html.haml (3.1ms)
+  [1m[36mImageSlider Load (0.3ms)[0m  [1m[34mSELECT "image_sliders".* FROM "image_sliders"[0m
+  Rendered collection of admin/image_sliders/_image_slider.html.haml [0 times] (0.0ms)
+  Rendered admin/image_sliders/index.html.haml within layouts/application (10.7ms)
+  Rendered shared/admin/_notice.html.haml (3.1ms)
+  Rendered shared/admin/_sidebar.html.haml (6.3ms)
+  Rendered shared/admin/_top_nav.html.haml (2.1ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 64ms (Views: 58.6ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/catelogs" for ::1 at 2020-02-27 20:38:27 +0530
+Processing by Admin::CatelogsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/catelogs/index.html.haml within layouts/application
+  Rendered admin/catelogs/_form.html.haml (3.6ms)
+  [1m[36mCatelog Load (0.3ms)[0m  [1m[34mSELECT "catelogs".* FROM "catelogs"[0m
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/catelogs/index.html.haml within layouts/application (9.8ms)
+  Rendered shared/admin/_notice.html.haml (2.8ms)
+  Rendered shared/admin/_sidebar.html.haml (6.6ms)
+  Rendered shared/admin/_top_nav.html.haml (2.4ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 68ms (Views: 63.2ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/products" for ::1 at 2020-02-27 20:38:31 +0530
+Processing by Admin::ProductsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/products/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "products"[0m
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/products/index.html.haml within layouts/application (9.6ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (6.2ms)
+  Rendered shared/admin/_top_nav.html.haml (2.5ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 61ms (Views: 56.5ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/posts" for ::1 at 2020-02-27 20:38:33 +0530
+Processing by Admin::PostsController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/posts/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/posts/index.html.haml within layouts/application (9.7ms)
+  Rendered shared/admin/_notice.html.haml (2.5ms)
+  Rendered shared/admin/_sidebar.html.haml (6.1ms)
+  Rendered shared/admin/_top_nav.html.haml (2.3ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 65ms (Views: 57.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/pages" for ::1 at 2020-02-27 20:38:34 +0530
+Processing by Admin::PagesController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/pages/index.html.haml within layouts/application
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "pages"[0m
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/pages/index.html.haml within layouts/application (8.5ms)
+  Rendered shared/admin/_notice.html.haml (2.6ms)
+  Rendered shared/admin/_sidebar.html.haml (9.0ms)
+  Rendered shared/admin/_top_nav.html.haml (2.3ms)
+  Rendered shared/admin/_footer.html.haml (0.8ms)
+Completed 200 OK in 61ms (Views: 57.1ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/admin/brands" for ::1 at 2020-02-27 20:38:34 +0530
+Processing by Admin::BrandsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/brands/index.html.haml within layouts/application
+  Rendered admin/brands/_form.html.haml (2.8ms)
+  [1m[36mBrand Load (0.3ms)[0m  [1m[34mSELECT  "brands".* FROM "brands" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of templates [0 times] (0.0ms)
+  Rendered admin/brands/index.html.haml within layouts/application (12.8ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (6.2ms)
+  Rendered shared/admin/_top_nav.html.haml (2.3ms)
+  Rendered shared/admin/_footer.html.haml (0.7ms)
+Completed 200 OK in 66ms (Views: 61.3ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/admin/categories" for ::1 at 2020-02-27 20:38:35 +0530
+Processing by Admin::CategoriesController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/categories/index.html.haml within layouts/application
+  Rendered admin/categories/_form.html.haml (2.6ms)
+  [1m[36mCategory Load (0.3ms)[0m  [1m[34mSELECT  "categories".* FROM "categories" LIMIT $1 OFFSET $2[0m  [["LIMIT", 10], ["OFFSET", 0]]
+  Rendered collection of admin/categories/_category.html.haml [2 times] (2.6ms)
+  Rendered admin/categories/index.html.haml within layouts/application (19.1ms)
+  Rendered shared/admin/_notice.html.haml (2.4ms)
+  Rendered shared/admin/_sidebar.html.haml (6.1ms)
+  Rendered shared/admin/_top_nav.html.haml (2.4ms)
+  Rendered shared/admin/_footer.html.haml (0.9ms)
+Completed 200 OK in 74ms (Views: 69.4ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/admin/admin" for ::1 at 2020-02-27 20:38:35 +0530
+Processing by Admin::AdminController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering admin/admin/index.html.haml within layouts/application
+  Rendered admin/admin/index.html.haml within layouts/application (0.7ms)
+  Rendered shared/admin/_notice.html.haml (2.8ms)
+  Rendered shared/admin/_sidebar.html.haml (6.7ms)
+  Rendered shared/admin/_top_nav.html.haml (5.0ms)
+  Rendered shared/admin/_footer.html.haml (1.2ms)
+Completed 200 OK in 58ms (Views: 54.1ms | ActiveRecord: 0.5ms)
+
+

@@ -1,0 +1,25 @@
+- if @featured_story  
+  %section#fact
+    .header-text
+      %h2 STORiES & TALES
+    .row.fact-content
+      .col-lg-6
+        .header-text
+          %h3= @featured_story.title
+          %p= truncate( @featured_story.description.html_safe, :length => 750, :omission => " ..." , :escape => false)
+          %br
+          = link_to "Read More...", @featured_story
+      .col-lg-6
+        #fact-slide.owl-carousel.owl-theme
+          - @featured_story.pictures.each do |story_pic|
+            .item= image_tag(story_pic.avatar.url(:medium))
+%section#stories
+  .container
+    .row
+      #blog
+        - @stories.each do |post|
+          - unless post.pictures.blank?
+            .item
+              = image_tag(post.pictures.first.avatar.url(:medium))
+              = link_to post do
+                %p.blog-title= post.title

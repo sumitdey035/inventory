@@ -1,0 +1,8 @@
+/*
+*= require css/bootstrap.min
+*= require bootstrap_and_overrides
+*= require css/custom
+*/
+.user_layout {
+  background: #F7F7F7;
+}

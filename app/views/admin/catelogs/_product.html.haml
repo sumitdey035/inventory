@@ -1,0 +1,23 @@
+%tr.pointer
+  %td.a-center
+    %label.check-box.check-box-sm.check-all
+      = check_box_tag "products[]", product.id, @product_catelog_items.include?(product.id)
+      %span
+  %td
+    .fa-star.fa{ class: ( product.featured ? 'text-danger' : 'text-default' )}
+    = product.name
+  %td
+    .fa.fa-inr
+    = product.product_price
+  %td
+    .fa.fa-inr
+    = product.sell_price
+  %td= product.category.name
+  %td= product.status == 1 ? 'Published' : 'Draft'
+  %td= product.current_stock
+
+  %td.last
+    = link_to edit_admin_product_path(product) do
+      .fa.fa-edit.fa-lg
+    = link_to [:admin, product], data: {confirm: 'Are you sure?'}, method: :delete do
+      .fa.fa-trash.fa-lg

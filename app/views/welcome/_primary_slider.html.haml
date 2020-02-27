@@ -1,0 +1,32 @@
+.row.hero-unit
+  .col-md-8
+    #owl-demo.owl-carousel.owl-theme
+      - unless @image_slider.blank?
+        - @image_slider.pictures.each do |image_slider_picture|
+          .item= image_tag(image_slider_picture.avatar)
+  .col-md-4
+    .intro-hero.text-center
+      = image_tag('logo-retina.png')
+      %h2 Making Heritage your Ensemble
+      %br
+        %p
+          SAUTRA is our social initiative to uplift the weavers’ community in India and give them a platform to showcase their craftsmanship, ensuring the upliftment of their lives, thereby keeping alive our rich culture and the heritage of handloom.
+          %br
+            %br Our designs are the fusion of India’s rich textile heritage, local skills and contemporary sensibilities.
+        %h4
+    %center
+      %button#btn-intro.btn-sautra.animated.flipInX{:onclick => "window.location.href='collection-list.html'", :type => "button"} Be a part of the celebration
+      
+.row
+  .col-md-3.feature.text-center.usp1
+    = image_tag('usp1.png')
+    %h5 Straight from the weaver's community
+  .col-md-3.feature.text-center.usp
+    = image_tag('usp2.png')
+    %h5 Choices of colors & various collections
+  .col-md-3.feature.text-center.usp1
+    = image_tag('usp3.png')
+    %h5 100% Quality assurance from us
+  .col-md-3.feature.text-center.usp
+    = image_tag('usp4.png')
+    %h5 Embrace & support the heritage      

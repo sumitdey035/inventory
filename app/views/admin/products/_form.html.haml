@@ -1,0 +1,115 @@
+= form_for [:admin, @product], html: { class:"form-horizontal", multipart: true } do |f|
+  - if @product.errors.any?
+    .alert.alert-danger
+      %p= "#{pluralize(@product.errors.count, "error")} prevented the form from being saved:"
+      %ul
+        - @product.errors.full_messages.each do |msg|
+          %li= msg
+  .col-md-8
+    .form-group
+      = f.text_field :name, class: "form-control", placeholder: "Enter product Name", required: true
+    .form-group
+      = f.text_area :description, class: "form-control product-wysihtml5", placeholder: "Enter product description"
+
+  .col-md-4
+    .x_panel
+      .x_title
+        %h2
+          Select category
+        .clearfix
+      %ul.category_box.list-unstyled
+        = render :partial => 'category', :collection => product_categories, :locals => {:f => f}
+
+      .x_title
+        %h2
+          Other details
+        .clearfix
+      
+      .form-group
+        %label.control-label.col-md-5 Product Type
+        .col-md-7
+          = f.select :product_type, product_types.map {|k,v| [ k, v ] }, {include_blank: false}, {class: "form-control"}
+
+      .form-group
+        %label.control-label.col-md-5 Brand
+        .col-md-7
+          = f.select :brand_id, brands.map {|brand| [ brand.name, brand.id ] }, {include_blank: false}, {class: "form-control"}
+      .form-group
+        %label.control-label.col-md-5 Price
+        .col-md-7
+          = f.number_field :sell_price, class: "form-control", required: true
+
+      .form-group
+        %label.control-label.col-md-5 SKU
+        .col-md-7
+          = f.text_field :sku, class: "form-control", required: true
+
+      .form-group
+        %label.control-label.col-md-5 Current Stock
+        .col-md-7
+          = f.number_field :current_stock, class: "form-control"
+
+      .form-group
+        %label.control-label.col-md-5 Place of origin
+        .col-md-7
+          = f.text_field :place_of_origin, class: "form-control"
+
+      .form-group
+        %label.control-label.col-md-5 Design
+        .col-md-7
+          = f.text_field :design, class: "form-control"
+      
+      .form-group
+        = f.label :blouse_piece, class: 'col-sm-5 control-label'
+        %label.switch.col-md-7
+          = f.check_box :has_blouse_piece
+          %span
+
+      / .form-group
+      /   = f.label :status, class: 'col-sm-5 control-label'
+      /   %label.switch.col-md-7
+      /     = f.check_box :status
+      /     %span
+      %hr
+      .form-group
+        .checkbox
+          %label.check-box
+            = f.check_box :featured, type: "checkbox"
+            %span Mark as featured
+
+      .form-group
+        %label.switch
+          Draft
+          = f.check_box :status, type: "checkbox"
+          %span Publish
+                
+      .form-group
+        = f.submit :save, class: "btn btn-success pull-right"
+        = link_to "Back", admin_products_path, class: "btn btn-default"
+
+- unless @product.new_record?
+  .row
+    .x_panel
+      .x_title
+        %h2
+          %i.fa.fa-bars
+          Images
+        .clearfix
+      .x_content
+        .col-xs-3
+          %ul.nav.nav-tabs.tabs-left
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#product_pictures"} List of images
+            %li
+              %a{"data-toggle" => "tab", :href => "#profile"} Upload Image
+        .col-xs-9
+          / Tab panes
+          .tab-content
+            #product_pictures.tab-pane.active
+              %p.lead List of images
+              = render @product.pictures
+            #profile.tab-pane
+              %p Drag multiple files to the box below for multi upload or click to select files.
+              = form_tag "upload.js", remote:true , multipart: true, class:"dropzone"
+
+  

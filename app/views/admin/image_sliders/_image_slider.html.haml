@@ -1,0 +1,10 @@
+%tr.pointer
+  %td.a-center
+    %input.flat{:name => "table_records", :type => "checkbox"}
+  %td= image_slider.name
+  %td= image_slider.status ? "Yes" : "No"
+  %td.last
+    = link_to edit_admin_image_slider_path(image_slider), remote: true do
+      .fa.fa-edit.fa-lg
+    = link_to [:admin, image_slider], data: {confirm: 'Are you sure?'}, method: :delete do
+      .fa.fa-trash.fa-lg

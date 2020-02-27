@@ -1,0 +1,23 @@
+= form_for [:admin, @catelog], html: { class:"form-horizontal admin_catelog_form" } do |f|
+  - if @catelog.errors.any?
+    .alert.alert-danger
+      %p= "#{pluralize(@catelog.errors.count, "error")} prevented the form from being saved:"
+      %ul
+        - @catelog.errors.full_messages.each do |msg|
+          %li= msg
+  .col-md-8
+    .form-group
+      = f.text_field :name, class: "form-control", placeholder: "Enter catelog Name", required: true
+    .form-group
+      = f.text_area :description, class: "form-control", placeholder: "Enter catelog description"
+    .form-group
+      = f.fields_for :pictures do |h|
+        = h.file_field :avatar, class: "form-control"
+    .form-group
+      %label.switch
+        Draft
+        = f.check_box :status, type: "checkbox"
+        %span Publish
+        
+    .form-group
+      = f.submit :save, class: "btn btn-success"

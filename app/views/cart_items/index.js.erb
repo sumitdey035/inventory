@@ -1,0 +1,2 @@
+$(".cart_content").replaceWith('<%= j(render @cart_items) %>');
+$(".total_price").replaceWith('<i class="fa fa-rupee"></i><%= cart_price(@cart_items)%>');

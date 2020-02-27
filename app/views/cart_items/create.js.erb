@@ -1,0 +1,2 @@
+$("#<%= dom_id(@product, :add_to_cart) %>").attr("disabled", true);
+$(".cart").text(<%= current_user.cart_items.count %>);

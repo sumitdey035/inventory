@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %title= t 'site.title'
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = favicon_link_tag 'favicon.png'
+    = csrf_meta_tags
+
+    %link{:crossorigin => "anonymous", :href => "//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", :integrity => "sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1", :rel => "stylesheet"}/
+
+  %body.nav-md
+    .container.body
+      .main_container
+        = render 'shared/admin/notice'
+        = render 'shared/admin/sidebar'
+        = render 'shared/admin/top_nav'
+        .right_col{:role => "main"}
+          = yield
+        = render 'shared/admin/footer'

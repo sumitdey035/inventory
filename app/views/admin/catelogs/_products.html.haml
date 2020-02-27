@@ -1,0 +1,20 @@
+= form_tag save_catelog_items_admin_catelog_path(@catelog), remote:true  do  
+  .table-responsive
+    %table.table.table-striped.jambo_table.bulk_action
+      %thead
+        %tr.headings
+          %th
+            %label.check-box.check-box-sm
+              %input.check-all{:type => "checkbox"}
+              %span
+          %th.col-md-3.column-title Name
+          %th.column-title Product Price
+          %th.column-title Sell Price
+          %th.column-title Category
+          %th.column-title Status
+          %th.column-title Stock
+          %th.column-title.no-link.last
+            %span.nobr Action
+      %tbody
+        = render :partial => 'product', :collection => @products
+  = submit_tag "Submit", class: 'btn btn-primary'

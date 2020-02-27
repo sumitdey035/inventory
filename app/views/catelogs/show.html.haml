@@ -1,0 +1,60 @@
+/ header
+.collection-header
+  = image_tag(@catelog.pictures.first.avatar, class: "cover")
+/ title-banner
+%section#arcade
+  .row.colwell
+    .container
+      .col-lg-12
+        .header-text
+          %h2= @catelog.name
+  / the grid
+  .jquery-script-clear
+  .container.marketing
+    %section#blog-landing
+      - @catelog.catelog_items.each do |catelog_item|
+        %article.white-panel
+          - collection = catelog_item.public_send "#{catelog_item.collection_type.singularize}"
+                
+<<<<<<< HEAD
+          = image_tag(collection.pictures.first.avatar) if collection.pictures.first
+=======
+          = image_tag(collection.pictures.first.avatar) unless collection.pictures.blank?
+>>>>>>> basic cart implementation done
+          %h1
+            %a{:href => catelog_item.collection_url}
+              = catelog_item.name
+          .like-collection
+            %p
+              = image_tag("like.png")
+              = "48"
+
+%section#popular
+  .header-text
+    %h2 POPULARS
+  / Content Row
+  .container
+    .row
+      #populars
+        - @catelogs.each do |catelog|
+          .item= image_tag(catelog.pictures.first.avatar(:medium))
+
+:javascript
+  $(document).ready(function() {     
+    $("#populars").owlCarousel({
+      slideSpeed : 600,
+      paginationSpeed : 400,
+      navigation: true,
+      items : 5,
+      itemsDesktop : [1199,3],
+      itemsDesktopSmall : [979,3]
+    });
+
+    $('#blog-landing').pinterest_grid({
+      no_columns: 3,
+      padding_x: 1,
+      padding_y: 1,
+      margin_bottom: 50,
+      single_column_breakpoint: 700
+    });
+  });

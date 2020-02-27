@@ -1,0 +1,11 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  port: 5432
+  user: postgres
+
+development:
+  <<: *default
+  database: sautra_development
+  host: localhost
+  password: welcome@123@

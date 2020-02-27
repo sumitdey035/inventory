@@ -1,0 +1,9 @@
+%span{id: "#{dom_id(picture)}", class: "col-md-55" }
+  .thumbnail.thumbnail-no-caption
+    .image.view.view-first
+      = image_tag(picture.avatar.url(:medium))
+      .mask
+        %p= picture.avatar_file_name
+        .tools.tools-bottom
+          = link_to admin_picture_path(picture), data: {confirm: 'Are you sure?'}, method: :delete, remote: true do
+            %i.fa.fa-times

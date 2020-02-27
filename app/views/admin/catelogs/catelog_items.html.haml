@@ -1,0 +1,22 @@
+%div
+  .page-title
+    .title_left
+      %h3
+        %i.fa.fa-book
+        = "Catelogs"
+  .clearfix
+  .row
+    .col-md-12.col-sm-12.col-xs-12
+      .x_panel
+        .x_content
+          %div{"data-example-id" => "togglable-tabs", :role => "tabpanel"}
+            %ul.nav.nav-tabs.bar_tabs{:role => "tablist"}
+              %li.active{:role => "presentation"}
+                %a#home-tab{"aria-expanded" => "true", "data-toggle" => "tab", :href => "#products", :role => "tab"} Products
+              %li{:role => "presentation"}
+                %a#profile-tab{"aria-expanded" => "false", "data-toggle" => "tab", :href => "#posts", :role => "tab"} Posts
+            .tab-content
+              #products.tab-pane.fade.active.in{"aria-labelledby" => "products-tab", :role => "tabpanel"}
+                = render :partial => 'products'
+              #posts.tab-pane.fade{"aria-labelledby" => "posts-tab", :role => "tabpanel"}
+                = render :partial => 'posts'

@@ -1,0 +1,29 @@
+%div
+  .page-title
+    .title_left
+      %h3
+        %i.fa.fa-cubes
+        = "Products"
+        %a.btn.btn-info.btn-sm{:href => new_admin_product_path} New
+  .clearfix
+  .row
+    .col-md-12.col-sm-12.col-xs-12
+      =# render "product_filter"
+      = paginate @products
+      .x_content    
+        .table-responsive
+          %table.table.table-striped.jambo_table.bulk_action
+            %thead
+              %tr.headings
+                %th
+                  %input#check-all.flat{:type => "checkbox"}
+                %th.col-md-3.column-title Name
+                %th.column-title Product Price
+                %th.column-title Sell Price
+                %th.column-title Category
+                %th.column-title Status
+                %th.column-title Stock
+                %th.column-title.no-link.last
+                  %span.nobr Action
+            %tbody
+              = render @products

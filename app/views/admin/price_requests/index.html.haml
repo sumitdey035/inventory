@@ -1,0 +1,26 @@
+%div
+  .page-title
+    .title_left
+      %h3
+        %i.fa.fa-rupee
+        = "Price Requests"
+  .clearfix
+  .row
+    .col-md-12.col-sm-12.col-xs-12
+      .x_content  
+        = paginate @price_requests  
+        .table-responsive
+          %table.table.table-striped.jambo_table.bulk_action
+            %thead
+              %tr.headings
+                %th
+                  %input#check-all.flat{:type => "checkbox"}
+                %th.column-title Name
+                %th.column-title Email Id
+                %th.column-title Mobile No
+                %th.col-md-1.column-title Product
+                %th.col-md-4.column-title Query
+                %th.column-title.no-link.last
+                  %span.nobr Action
+            %tbody
+              = render @price_requests

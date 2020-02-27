@@ -1,0 +1,18 @@
+.form
+  .form-group
+    .input-group.col-sm-3.pull-right
+      %input.form-control{:type => "text", placeholder: "Search by keywords"}
+        %span.input-group-btn
+          %a.btn.btn-default
+            .fa.fa-search
+    .col-sm-2
+      %select.form-control
+        %option Bulk Options
+        %option Delete
+    .col-sm-2
+      = select_tag :brand_id, options_from_collection_for_select(brands, "id", "name"), prompt: "Select Categroy", class: "form-control"
+    .col-sm-2
+      %select.form-control
+        %option Select Status
+        %option Published
+        %option Draft

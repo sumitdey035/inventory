@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total_price: 9.99
+  shipping: 9.99
+  tax: 9.99
+  adjustment: 9.99
+  final_price: 9.99
+
+two:
+  total_price: 9.99
+  shipping: 9.99
+  tax: 9.99
+  adjustment: 9.99
+  final_price: 9.99

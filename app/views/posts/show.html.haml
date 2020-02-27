@@ -1,0 +1,46 @@
+%section#product-info
+  .row
+    .container.product
+      .col-md-6
+        #mainDiv
+          .main-img-container
+            / #mainImage
+            /   = image_tag(@post.pictures.first.avatar.url(:large))
+            #mainImage
+              %img#zoom_01{"data-zoom-image" => @post.pictures.first.avatar, :src => @post.pictures.first.avatar.url(:medium)}/
+        %br/
+        %br/
+        %ul.product_thumb
+          - @post.pictures.each do |picture|
+            %li
+              .img-container
+                = image_tag(picture.avatar.url(:medium))
+      .col-md-6
+        .product-text
+          %h3= @post.title
+          #demo
+            %button.like
+              = image_tag("love.png")
+              %span.likes 98
+        %br
+          %div
+            / Nav tabs
+            %ul#mytabs.nav.nav-tabs{:role => "tablist"}
+              %li.active{:role => "presentation"}
+                %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#home", :role => "tab"} Description
+              / %li{:role => "presentation"}
+              /   %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#messages", :role => "tab"} Reviews
+            / Tab panes
+            .tab-content
+              #home.tab-pane.active{:role => "tabpanel"}= @post.description.html_safe
+              / #messages.tab-pane{:role => "tabpanel"} ...
+
+:javascript
+  $(document).ready(function() {
+    $(".img-container img").hover(function(){
+      var src = $(this).attr("src");
+      $("#mainImage img").attr("src",src);
+    });
+  });
+
+  $('#mainImage img').elevateZoom({tint:true, tintColour:'#F90', tintOpacity:0.5});

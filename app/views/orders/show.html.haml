@@ -1,0 +1,48 @@
+%section#product-info
+  .row
+    .container
+      .col-sm-9
+        - @order.order_items.each do |order_item|
+          .row
+            .col-sm-3
+              = image_tag(order_item.product.pictures.first.avatar.url(:thumb)) unless order_item.product.pictures.blank?
+              = order_item.product.name
+            .col-sm-3
+              .fa.fa-inr= order_item.product.sell_price
+            .col-sm-3
+            .col-sm-3
+          %hr
+      .col-sm-3
+        .panel.panel-default
+          .panel-heading Delivery Address
+          .panel-body
+            %b= @order.address.name
+            %br
+            = @order.address.street_address
+            - if @order.address.landmark  
+              %br
+              = @order.address.landmark
+            %br
+            = "#{@order.address.city} - #{@order.address.pincode}"
+            %br
+            = "#{@order.address.state}, #{@order.address.country}"
+            %br
+            = "Mobile : #{@order.address.phone_number}"
+
+        .panel.panel-default
+          .panel-heading Payment Summary
+          .panel-body
+            .col-sm-6.text-left Order Total
+            .text-right
+              .fa.fa-inr= @order.total_price
+            .col-sm-6.text-left Order Total
+            .text-right
+              .fa.fa-inr= @order.shipping
+            %hr
+            %b.col-sm-12.text-center
+              Order Total
+              .fa.fa-inr= @order.final_price
+
+
+
+

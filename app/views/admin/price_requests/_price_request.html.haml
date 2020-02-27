@@ -1,0 +1,12 @@
+%tr.pointer
+  %td.a-center
+    %input.flat{type: "checkbox", id: price_request.id}
+  %td= price_request.name
+  %td= price_request.email_id
+  %td= price_request.mobile_no
+  %td
+    = link_to price_request.product.name, price_request.product, target: :_BLANK
+  %td= price_request.query
+  %td.last
+    = link_to [:admin, price_request], data: { confirm: 'Are you sure?' }, method: :delete do
+      .fa.fa-trash.fa-lg

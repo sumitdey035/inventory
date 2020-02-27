@@ -1,0 +1,82 @@
+%section#product-info
+  .row
+    .container.product
+      = stock_status(@product)
+      .col-md-6
+        #mainDiv
+          .main-img-container
+            / #mainImage= image_tag(@product.pictures.first.avatar.url(:large), "data-zoom-image" => @product.pictures.first.avatar.url(:large)) unless @product.pictures.blank?
+            #mainImage
+              %img#zoom_01{"data-zoom-image" => @product.pictures.first.avatar, :src => @product.pictures.first.avatar.url(:medium)}/
+
+
+        %br/
+        %br/
+        %ul.product_thumb
+          - @product.pictures.each do |picture|
+            %li
+              .img-container
+                = image_tag(picture.avatar.url(:medium))
+      .col-md-6
+        .product-text
+          %h3= @product.name
+          #demo
+            %button.like
+              = image_tag("love.png")
+              %span.likes 98
+
+          - if @product.sell_price
+            %h3= "Rs. #{@product.sell_price}"
+            = link_to "Add to cart", cart_items_path(product_id: @product), method: :post, class: "btn btn-sautra", remote: true, disabled: dissable?(@product), id: "#{dom_id(@product, :add_to_cart)}"
+          - else
+            %button.btn-sautra{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Request for price
+          
+        %br
+          %div
+            / Nav tabs
+            %ul#mytabs.nav.nav-tabs{:role => "tablist"}
+              %li.active{:role => "presentation"}
+                %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#home", :role => "tab"} Description
+              %li{:role => "presentation"}
+                %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#profile", :role => "tab"} Product Info
+              / %li{:role => "presentation"}
+              /   %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#messages", :role => "tab"} Reviews
+            / Tab panes
+            .tab-content
+              #home.tab-pane.active{:role => "tabpanel"}= @product.description.html_safe
+              #profile.tab-pane{:role => "tabpanel"}
+                %table.table.table-bordered
+                  %tbody
+                    %tr
+                      %td Brand
+                      %td= @product.brand.name
+                    %tr
+                      %td Blouse piece
+                      %td= @product.has_blouse_piece ? "Yes": "No"
+
+                    - unless @product.place_of_origin.blank?
+                      %tr
+                        %td Place of origin
+                        %td= @product.place_of_origin
+                    
+                    - if @product.design
+                      %tr
+                        %td Design
+                        %td= @product.design
+                    %tr
+                      %td Category
+                      %td= @product.category.name
+
+              / #messages.tab-pane{:role => "tabpanel"} ...
+
+= render "admin/price_requests/form", { product_id: @product.id }
+
+:javascript
+  $(document).ready(function() {
+    $(".img-container img").hover(function(){
+      var src = $(this).attr("src");
+      $("#mainImage img").attr("src",src);
+    });
+
+    $('#mainImage img').elevateZoom({tint:true, tintColour:'#F90', tintOpacity:0.5});
+  });

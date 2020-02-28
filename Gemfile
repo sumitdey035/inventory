@@ -10,7 +10,7 @@ gem 'coffee-rails'
 gem 'therubyrhino'
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'haml', '~> 4.0.5'
+gem 'haml', '~> 5.0.0'
 
 # Use thin as the app server
 # gem "eventmachine"
